@@ -27,7 +27,7 @@ class OfficialController
      * 公众号授权登录
      * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function officialLogin(){
+    public function login(){
 
         return redirect($this->officialNoLogin->getCodeUrl(config('wx.redirect_url')));
     }
