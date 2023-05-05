@@ -1,7 +1,7 @@
 {
     "name": "www/wxlogin",
     "description": "微信登录",
-    "type": "library",
+    "type": "project",
     "license": "MIT",
     "autoload": {
         "psr-4": {

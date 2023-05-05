@@ -1,6 +1,6 @@
 <?php
 
-namespace WxLogin\OfficialNoLogin;
+namespace WxLogin\OfficialNo;
 
 use Curl\CurlService\CurlService;
 
