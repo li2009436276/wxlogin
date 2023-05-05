@@ -7,7 +7,7 @@ use Login\Resources\BaseResource;
 use Login\Resources\ErrorResource;
 use Illuminate\Http\Request;
 use WxLogin\Repositories\Contracts\UnionInterface;
-use WxLogin\Service\OfficialNo\OfficialNoLogin;
+use WxLogin\Services\OfficialNo\OfficialNoLogin;
 use DB;
 
 /**
