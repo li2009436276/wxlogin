@@ -26,7 +26,7 @@ class UnionRepository extends Repository implements UnionInterface
         //此处创建用户
         if (config('wx.is_bind_user')) {
 
-            $userInfo = config('wx.bind_repository_class')->bindWx($wxInfo);
+            $userInfo = resolve(config('wx.bind_repository_class'))->bindWx($wxInfo);
             if (!$userInfo) {
 
                 DB::rollback();

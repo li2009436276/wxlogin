@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Login\Resources;
+namespace WxLogin\Resources;
 
 
 use Illuminate\Http\Resources\Json\Resource;
