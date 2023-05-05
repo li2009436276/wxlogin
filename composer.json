@@ -1,0 +1,20 @@
+{
+    "name": "www/wxlogin",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Www\\Wxlogin\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "liwenqi",
+            "email": "571816409@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "www/curl": "1.0.1.4"
+    }
+}
