@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Www\\Wxlogin\\": "src/"
+            "Wxlogin\\": "src/"
         }
     },
     "authors": [
@@ -14,8 +14,5 @@
             "email": "571816409@qq.com"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {
-        "www/curl": "1.0.1.4"
-    }
+    "minimum-stability": "dev"
 }
