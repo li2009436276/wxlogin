@@ -3,7 +3,7 @@
 namespace WxLogin\Repositories\Eloquent;
 
 use MakeRep\Repository;
-use Wxlogin\Models\Union;
+use WxLogin\Models\Union;
 use WxLogin\Repositories\Contracts\UnionInterface;
 use DB;
 
