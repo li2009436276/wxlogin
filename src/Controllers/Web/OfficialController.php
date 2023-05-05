@@ -3,8 +3,8 @@
 namespace Wxlogin\Controllers\Web;
 
 
-use Login\Resources\BaseResource;
-use Login\Resources\ErrorResource;
+use WxLogin\Resources\BaseResource;
+use WxLogin\Resources\ErrorResource;
 use Illuminate\Http\Request;
 use WxLogin\Repositories\Contracts\UnionInterface;
 use WxLogin\Services\OfficialNo\OfficialNoLogin;
