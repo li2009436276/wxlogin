@@ -31,7 +31,7 @@ class OfficialNoLogin
         return $re;
     }
 
-    public function resfrushToken($refresh_token) {
+    public function refreshToken($refresh_token) {
 
         $url = sprintf( $this->refreshTokenUrl, $this->appId, $refresh_token );
         $re = CurlService::get( $url );
