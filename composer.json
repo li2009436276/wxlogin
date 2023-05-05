@@ -16,6 +16,12 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "www/curl": "1.0.1.4"
+        "www/curl": "^1.0",
+        "www/make-rep": "^1.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": ["WxLogin\\Providers\\AppServiceProvider", "WxLogin\\Providers\\RouteServiceProvider"]
+        }
     }
 }
