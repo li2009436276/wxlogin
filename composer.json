@@ -14,5 +14,8 @@
             "email": "571816409@qq.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require": {
+        "www/curl": "1.0.1.4"
+    }
 }
