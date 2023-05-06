@@ -21,7 +21,7 @@ class UnionRepository extends Repository implements UnionInterface
      */
     public function create($wxInfo){
 
-        DB::beginTrasaction();
+        DB::beginTransaction();
 
         //此处创建用户
         if (config('wx.is_bind_user')) {
@@ -35,7 +35,7 @@ class UnionRepository extends Repository implements UnionInterface
             }
         }
 
-        $res = $this->unionInterface->add($wxInfo);
+        $res = $this->add($wxInfo);
         if ($res) {
 
             DB::commit();
