@@ -33,6 +33,14 @@ class OfficialController
     }
 
     /**
+     * 静默授权
+     * @return mixed
+     */
+    public function silentAuth(){
+        return redirect($this->officialNoLogin->getCodeUrl(config('wx.silent_redirect_url')));
+    }
+
+    /**
      * 微信授权并绑定用户
      * @param Request $request
      * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void

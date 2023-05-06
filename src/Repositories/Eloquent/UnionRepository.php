@@ -33,7 +33,10 @@ class UnionRepository extends Repository implements UnionInterface
 
                 return false;
             }
+            $wxInfo['user_id'] = $userInfo['id'];
         }
+
+        $wxInfo['privilege'] = json_encode($wxInfo['privilege']);
 
         $res = $this->add($wxInfo);
         if ($res) {
