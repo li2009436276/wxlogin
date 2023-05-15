@@ -11,6 +11,7 @@ return [
     'bind_repository_class' => resolve(''),
     'code' => [
         'success'   => [0,'成功'],
-        'fail'      => [4001,'失败']
+        'fail'      => [4001,'失败'],
+        'no_login'  => [4002,'请登录'],
     ],
 ];

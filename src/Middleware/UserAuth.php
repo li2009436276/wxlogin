@@ -24,7 +24,7 @@ class UserAuth
 
         if (!$userInfo) {
 
-            tne('NO_AUTH');
+            tne('no_login',['code_file'=>'wx.code']);
         }
 
         $request->merge(['ticket'=>$userInfo]);
