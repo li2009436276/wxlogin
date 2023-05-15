@@ -10,4 +10,12 @@ interface UnionInterface
      * @return mixed
      */
     public function create($wxInfo);
+
+    /**
+     * 微信登录
+     * @param $wxInfo
+     * @param $type
+     * @return mixed
+     */
+    public function login($wxInfo,$type);
 }

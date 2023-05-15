@@ -26,14 +26,27 @@ class UnionRepository extends Repository implements UnionInterface
         //此处创建用户
         if (config('wx.is_bind_user')) {
 
-            $userInfo = resolve(config('wx.bind_repository_class'))->bindWx($wxInfo);
-            if (!$userInfo) {
+            //小程序和公众号都有授权情况判定
+            if (!empty($wxInfo['unionid'])) {
 
-                DB::rollback();
+                $unionRes = $this->index(['union_id'=>$wxInfo['unionid']]);
+                if ($unionRes) {
 
-                return false;
+                    $wxInfo['user_id'] = $unionRes['id'];
+                }
+            } else { //如果没有绑定则添加用户
+
+                $userInfo = resolve(config('wx.bind_repository_class'))->bindWx($wxInfo);
+                if (!$userInfo) {
+
+                    DB::rollback();
+
+                    return false;
+                }
+                $wxInfo['user_id'] = $userInfo['id'];
             }
-            $wxInfo['user_id'] = $userInfo['id'];
+
+
         }
 
         $wxInfo['privilege'] = json_encode($wxInfo['privilege']);
@@ -48,5 +61,28 @@ class UnionRepository extends Repository implements UnionInterface
         DB::rollback();
         return false;
 
+    }
+
+    /**
+     * 微信登录
+     * @param $wxInfo
+     * @Param $type
+     * @return mixed
+     */
+    public function login($wxInfo,$type){
+
+       $where  = [
+           'openid' => $wxInfo['openid'],
+           'type'   => $type
+       ];
+
+       $unionRes = $this->index($where);
+       if ($unionRes) {
+
+           return resolve(config('wx.bind_repository_class'))->findById($unionRes['user_id']);
+
+       }
+
+       return false;
     }
 }

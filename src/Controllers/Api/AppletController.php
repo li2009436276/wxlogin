@@ -3,6 +3,7 @@
 namespace WxLogin\Controllers\Api;
 
 use Curl\StrService\StrService;
+use Curl\TicketService\TicketService;
 use Illuminate\Support\Facades\Storage;
 use WxLogin\Repositories\Contracts\UnionInterface;
 use WxLogin\Resources\BaseResource;
@@ -55,16 +56,15 @@ class AppletController
     }
 
     /**
-     * 小程序授权
+     * 小程序授权 并绑定用户
      * @param Request $request
      * @return void|BaseResource|ErrorResource
      * @throws \Exception
      */
-    public function authLogin(Request $request) {
+    public function authBindUser(Request $request) {
 
         $authInfo = $this->appletLogin->auth($request->code);
         if ($authInfo) {
-
 
             $data = [
                 'openid'    => $authInfo['openid'],
@@ -102,9 +102,37 @@ class AppletController
             $res = $this->unionInterface->create($data);
             if ($res) {
 
-                return new BaseResource([]);
+                //绑定后开始登录
+                $userInfo = $this->unionInterface->login($authInfo, 2);
+                if ($userInfo) {
+
+                    $ticket = TicketService::createTicket($userInfo);
+                    return new BaseResource(['ticket' => $ticket]);
+                }
             }
             return new ErrorResource([]);
         }
+    }
+
+    /**
+     * 小程序登录
+     * @param Request $request
+     * @return BaseResource|ErrorResource
+     * @throws \Exception
+     */
+    public function login(Request $request){
+
+        $authInfo = $this->appletLogin->auth($request->code);
+        if ($authInfo) {
+
+            $userInfo = $this->unionInterface->login($authInfo, 2);
+            if ($userInfo) {
+
+                $ticket = TicketService::createTicket($userInfo);
+                return new BaseResource(['ticket' => $ticket]);
+            }
+        }
+
+        return new ErrorResource([]);
     }
 }
