@@ -3,7 +3,6 @@
 namespace WxLogin\Services\Applet;
 
 use Curl\CurlService\CurlService;
-use WxLogin\Services\AccessToken;
 
 class AppletLogin extends AccessToken
 {

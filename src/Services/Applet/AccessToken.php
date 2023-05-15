@@ -1,8 +1,9 @@
 <?php
 
-namespace WxLogin\Services;
+namespace WxLogin\Services\Applet;
 
 use Curl\CurlService\CurlService;
+use function WxLogin\Services\config;
 
 class AccessToken
 {

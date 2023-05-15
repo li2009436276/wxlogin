@@ -27,6 +27,7 @@ class CreateUnionTable extends Migration
             $table->string('privilege')->nullable()->comment('用户特权信息');
             $table->string('unionid')->nullable()->comment('unionid');
             $table->string('openid')->nullable()->comment('openid');
+            $table->tinyInteger('type')->default(1)->comment('union 类型：1=公众号，2=小程序');
             $table->softDeletes();
             $table->timestamps();
         });
