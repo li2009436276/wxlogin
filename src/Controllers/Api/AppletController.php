@@ -66,49 +66,59 @@ class AppletController
         $authInfo = $this->appletLogin->auth($request->code);
         if ($authInfo) {
 
-            $data = [
-                'openid'    => $authInfo['openid'],
-                'nickname'  => $request->nickName,
-                'sex'       => $request->gender,
-                'country'   => $request->country,
-                'province'  => $request->province,
-                'city'      => $request->city,
-                'language'  => $request->language,
-                'type'      => 2,
-            ];
+            $userInfo = $this->unionInterface->login($authInfo, 2);
+            if ($userInfo) {
 
-            if (!empty($authInfo['unionid'])) {
+                $ticket = TicketService::createTicket($userInfo);
+                return new BaseResource(['ticket' => $ticket]);
 
-                $data['unionid'] = $authInfo['unionid'];
-            }
+            } else {
 
-            //保存base64图片
-            $filePath = date('Y/m/d').StrService::randStr(16).'.png';
-            $saveRes = Storage::put($filePath,base64_decode($request->avatarUrl));
-            if ($saveRes) {
+                $data = [
+                    'openid'    => $authInfo['openid'],
+                    'nickname'  => $request->nickName,
+                    'sex'       => $request->gender,
+                    'country'   => $request->country,
+                    'province'  => $request->province,
+                    'city'      => $request->city,
+                    'language'  => $request->language,
+                    'type'      => 2,
+                ];
 
-                $data['headimgurl'] = $filePath;
-            }
+                if (!empty($authInfo['unionid'])) {
 
-            //获取手机号
-            if ($request->phoneCode) {
-
-                $phoneInfo = $this->appletLogin->phone($request->phoneCode);
-                if ($phoneInfo) {
-                    $data['phone'] = $phoneInfo['phone_info']['phoneNumber'];
+                    $data['unionid'] = $authInfo['unionid'];
                 }
-            }
 
-            $res = $this->unionInterface->create($data);
-            if ($res) {
+                //保存base64图片
+                $filePath = date('Y/m/d').StrService::randStr(16).'.png';
+                $saveRes = Storage::put($filePath,base64_decode($request->avatarUrl));
+                if ($saveRes) {
 
-                //绑定后开始登录
-                $userInfo = $this->unionInterface->login($authInfo, 2);
-                if ($userInfo) {
-
-                    $ticket = TicketService::createTicket($userInfo);
-                    return new BaseResource(['ticket' => $ticket]);
+                    $data['headimgurl'] = $filePath;
                 }
+
+                //获取手机号
+                if ($request->phoneCode) {
+
+                    $phoneInfo = $this->appletLogin->phone($request->phoneCode);
+                    if ($phoneInfo) {
+                        $data['phone'] = $phoneInfo['phone_info']['phoneNumber'];
+                    }
+                }
+
+                $res = $this->unionInterface->create($data);
+                if ($res) {
+
+                    //绑定后开始登录
+                    $userInfo = $this->unionInterface->login($authInfo, 2);
+                    if ($userInfo) {
+
+                        $ticket = TicketService::createTicket($userInfo);
+                        return new BaseResource(['ticket' => $ticket]);
+                    }
+                }
+
             }
             return new ErrorResource([]);
         }
@@ -132,6 +142,8 @@ class AppletController
                 return new BaseResource(['ticket' => $ticket]);
             }
         }
+
+
 
         return new ErrorResource([]);
     }
