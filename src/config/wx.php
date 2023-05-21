@@ -8,7 +8,7 @@ return [
     'applet_secret'   => env('WX_APPLET_SECRET'),
     'redirect_url'      => env('REDIRECT_URI',env('APP_URL').'/official/auth'),
     'is_bind_user'      => true,
-    'bind_repository_class' => resolve(''),
+    'bind_repository_class' => '',
     'code' => [
         'success'   => [0,'成功'],
         'fail'      => [4001,'失败'],
