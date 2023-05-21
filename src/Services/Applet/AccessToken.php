@@ -11,8 +11,8 @@ class AccessToken
     protected $secret;
     public function __construct($appId = null,$secret = null)
     {
-        $this->appId = $appId ? : \config('wx.applet_app_id');
-        $this->secret = $secret ? : \config('wx.applet_secret');
+        $this->appId = $appId ? : config('wx.applet_app_id');
+        $this->secret = $secret ? : config('wx.applet_secret');
     }
 
     /**
