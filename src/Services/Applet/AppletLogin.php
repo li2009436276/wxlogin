@@ -24,7 +24,7 @@ class AppletLogin extends AccessToken
                 'grant_type' => 'authorization_code',
             ];
 
-            $res = CurlService::post($url,$data);
+            $res = CurlService::get($url,$data);
             if (empty($res['openid'])) {
 
                 throw new \Exception(json_encode($res));
