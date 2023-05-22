@@ -46,7 +46,6 @@ class UnionRepository extends Repository implements UnionInterface
                 $wxInfo['user_id'] = $userInfo['id'];
             }
 
-
         }
 
         unset($wxInfo['invite_no']);
