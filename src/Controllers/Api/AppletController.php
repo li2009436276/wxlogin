@@ -74,6 +74,7 @@ class AppletController
                 'province'  => $request->province,
                 'city'      => $request->city,
                 'language'  => $request->language,
+                'invite_no' => $request->invite_no,
                 'type'      => 2,
             ];
 

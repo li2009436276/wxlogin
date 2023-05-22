@@ -49,6 +49,7 @@ class UnionRepository extends Repository implements UnionInterface
 
         }
 
+        unset($wxInfo['invite_no']);
         $wxInfo['privilege'] = json_encode($wxInfo['privilege']);
 
         $res = $this->add($wxInfo);
