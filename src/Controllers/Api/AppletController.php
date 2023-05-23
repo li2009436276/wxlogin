@@ -85,7 +85,7 @@ class AppletController
 
             //保存base64图片
             $filePath = date('Y/m/d').'/'.StrService::randStr(16).'.png';
-            $saveRes = Storage::put($filePath,base64_decode($request->avatarUrl));
+            $saveRes = Storage::put($filePath,base64_decode(explode(',',$request->avatarUrl)[1]));
             if ($saveRes) {
 
                 $data['headimgurl'] = $filePath;
