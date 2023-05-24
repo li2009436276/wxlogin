@@ -62,12 +62,17 @@ class AppletController
      */
     public function bindPhone(Request $request){
 
-        if ($request->phone) {
+        if ($request->phoneCode) {
 
-            $res = $this->unionInterface->bindPhone($request->ticket['id'],$request->phone);
-            if ($res) {
+            $phoneInfo = $this->appletLogin->phone($request->phoneCode);
+            if ($phoneInfo) {
+                $phone = $phoneInfo['phone_info']['phoneNumber'];
 
-                return new BaseResource([]);
+                $res = $this->unionInterface->bindPhone($request->ticket['id'],$phone);
+                if ($res) {
+
+                    return new BaseResource([]);
+                }
             }
         }
 
