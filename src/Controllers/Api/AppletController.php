@@ -56,6 +56,26 @@ class AppletController
     }
 
     /**
+     * 绑定手机号
+     * @param Request $request
+     * @return BaseResource|ErrorResource
+     */
+    public function bindPhone(Request $request){
+
+        if ($request->phone) {
+
+            $res = $this->unionInterface->bindPhone($request->ticket['id'],$request->phone);
+            if ($res) {
+
+                return new BaseResource([]);
+            }
+        }
+
+        return new ErrorResource([]);
+
+    }
+
+    /**
      * 小程序授权 并绑定用户
      * @param Request $request
      * @return void|BaseResource|ErrorResource
