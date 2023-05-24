@@ -84,12 +84,16 @@ class AppletController
             }
 
             //保存base64图片
-            $filePath = date('Y/m/d').'/'.StrService::randStr(16).'.png';
-            $saveRes = Storage::put($filePath,base64_decode(explode(',',$request->headerimg)[1]));
-            if ($saveRes) {
+            if ($request->headerimg) {
 
-                $data['headimgurl'] = $filePath;
+                $filePath = date('Y/m/d').'/'.StrService::randStr(16).'.png';
+                $saveRes = Storage::put($filePath,base64_decode(explode(',',$request->headerimg)[1]));
+                if ($saveRes) {
+
+                    $data['headimgurl'] = $filePath;
+                }
             }
+
 
             //获取手机号
             if ($request->phoneCode) {
