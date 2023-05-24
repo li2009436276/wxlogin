@@ -119,16 +119,6 @@ class AppletController
                 }
             }
 
-
-            //获取手机号
-            if ($request->phoneCode) {
-
-                $phoneInfo = $this->appletLogin->phone($request->phoneCode);
-                if ($phoneInfo) {
-                    $data['phone'] = $phoneInfo['phone_info']['phoneNumber'];
-                }
-            }
-
             $res = $this->unionInterface->create($data);
             if ($res) {
 
