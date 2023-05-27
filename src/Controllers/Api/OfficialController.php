@@ -56,11 +56,20 @@ class OfficialController
             $userInfo = $this->unionInterface->login($res);
             if (!$userInfo) {
 
-                $wxInfo = $this->officialNoLogin->getUserInfo($res['openid'], $res['access_token']);
+                if (config('wx.official_auth_type') == 'snsapi_userinfo') {
+                    $wxInfo = $this->officialNoLogin->getUserInfo($res['openid'], $res['access_token']);
 
-                if ($wxInfo && !empty($wxInfo['openid'])) {
+                    if ($wxInfo && !empty($wxInfo['openid'])) {
 
-                    $res = $this->unionInterface->create($wxInfo);
+                        $res = $this->unionInterface->create($wxInfo);
+                        if ($res) {
+
+                            $userInfo = $this->unionInterface->login($res);
+                        }
+                    }
+                } else {
+
+                    $res = $this->unionInterface->create(['openid'=>$res['openid']]);
                     if ($res) {
 
                         $userInfo = $this->unionInterface->login($res);

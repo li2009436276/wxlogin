@@ -3,6 +3,7 @@
 namespace Wxlogin\Controllers\Web;
 
 
+use Curl\TicketService\TicketService;
 use WxLogin\Resources\BaseResource;
 use WxLogin\Resources\ErrorResource;
 use Illuminate\Http\Request;
@@ -51,19 +52,40 @@ class OfficialController
         $res = $this->officialNoLogin->getToken($request->code);
         if ($res && !empty($res['openid'])) {
 
-            $wxInfo = $this->officialNoLogin->getUserInfo($res['openid'],$res['access_token']);
+            //绑定后开始登录
+            $userInfo = $this->unionInterface->login($res);
+            if (!$userInfo) {
 
-            if ($wxInfo && !empty($wxInfo['openid'])) {
+                if (config('wx.official_auth_type') == 'snsapi_userinfo') {
+                    $wxInfo = $this->officialNoLogin->getUserInfo($res['openid'], $res['access_token']);
 
-                $res = $this->unionInterface->create($wxInfo);
+                    if ($wxInfo && !empty($wxInfo['openid'])) {
 
-               if ($res) {
+                        $res = $this->unionInterface->create($wxInfo);
+                        if ($res) {
 
-                   return new BaseResource([]);
-               }
+                            $userInfo = $this->unionInterface->login($res);
+                        }
+                    }
+                } else {
+
+                    $res = $this->unionInterface->create(['openid'=>$res['openid']]);
+                    if ($res) {
+
+                        $userInfo = $this->unionInterface->login($res);
+                    }
+                }
             }
-        }
 
+            if ($userInfo) {
+
+                //绑定后开始登录
+                $ticket = TicketService::createTicket($userInfo);
+                return new BaseResource(['ticket' => $ticket]);
+            }
+
+
+        }
         return new ErrorResource([]);
     }
 

@@ -6,7 +6,7 @@ use Curl\CurlService\CurlService;
 
 class OfficialNoLogin
 {
-    public $codeUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+    public $codeUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=STATE#wechat_redirect";
     public $authTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
     public $refreshTokenUrl = 'https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%s&grant_type=refresh_token&refresh_token=%s';
     public $userUrl = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
@@ -20,7 +20,7 @@ class OfficialNoLogin
 
     public function getCodeUrl($redirectUri){
 
-        return sprintf($this->codeUrl,$this->appId, $redirectUri);
+        return sprintf($this->codeUrl,$this->appId, $redirectUri,\config('wx.official_auth_type'));
     }
 
     public function getToken($code)
