@@ -5,9 +5,10 @@ return [
     'official_app_id'   => env('WX_OFFICIAL_APP_ID'),
     'official_secret'   => env('WX_OFFICIAL_SECRET'),
     'official_auth_type'=> env('WX_OFFICIAL_AUTH_TYPE','snsapi_userinfo'),
+    'official_redirect_url'=> env('WX_OFFICIAL_REDIRECT_URI',env('APP_URL').'/official/auth'),
+
     'applet_app_id'   => env('WX_APPLET_APP_ID'),
     'applet_secret'   => env('WX_APPLET_SECRET'),
-    'redirect_url'      => env('REDIRECT_URI',env('APP_URL').'/official/auth'),
     'is_bind_user'      => true,
     'bind_repository_class' => '',
     'code' => [

@@ -30,7 +30,7 @@ class OfficialController
      */
     public function login(){
 
-        return redirect($this->officialNoLogin->getCodeUrl(config('wx.redirect_url')));
+        return redirect($this->officialNoLogin->getCodeUrl(config('wx.official_redirect_url')));
     }
 
     /**
