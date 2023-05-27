@@ -25,5 +25,5 @@ interface UnionInterface
      * @param $type
      * @return mixed
      */
-    public function login($wxInfo,$type);
+    public function login($wxInfo,$type = 1);
 }

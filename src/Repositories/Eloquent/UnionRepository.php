@@ -95,7 +95,7 @@ class UnionRepository extends Repository implements UnionInterface
      * @Param $type
      * @return mixed
      */
-    public function login($wxInfo,$type){
+    public function login($wxInfo,$type = 1){
 
        $where  = [
            'openid' => $wxInfo['openid'],
