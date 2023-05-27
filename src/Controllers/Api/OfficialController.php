@@ -52,22 +52,30 @@ class OfficialController
         $res = $this->officialNoLogin->getToken($request->code);
         if ($res && !empty($res['openid'])) {
 
-            $wxInfo = $this->officialNoLogin->getUserInfo($res['openid'], $res['access_token']);
+            //绑定后开始登录
+            $userInfo = $this->unionInterface->login($res);
+            if (!$userInfo) {
 
-            if ($wxInfo && !empty($wxInfo['openid'])) {
+                $wxInfo = $this->officialNoLogin->getUserInfo($res['openid'], $res['access_token']);
 
-                $res = $this->unionInterface->create($wxInfo);
-                if ($res) {
+                if ($wxInfo && !empty($wxInfo['openid'])) {
 
-                    //绑定后开始登录
-                    $userInfo = $this->unionInterface->login($res);
-                    if ($userInfo) {
+                    $res = $this->unionInterface->create($wxInfo);
+                    if ($res) {
 
-                        $ticket = TicketService::createTicket($userInfo);
-                        return new BaseResource(['ticket' => $ticket]);
+                        $userInfo = $this->unionInterface->login($res);
                     }
                 }
             }
+
+            if ($userInfo) {
+
+                //绑定后开始登录
+                $ticket = TicketService::createTicket($userInfo);
+                return new BaseResource(['ticket' => $ticket]);
+            }
+
+
         }
         return new ErrorResource([]);
     }
