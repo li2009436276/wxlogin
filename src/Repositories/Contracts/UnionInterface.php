@@ -12,6 +12,14 @@ interface UnionInterface
     public function create($wxInfo);
 
     /**
+     * 绑定手机号
+     * @param $userId
+     * @param $phone
+     * @return mixed
+     */
+    public function bindPhone($userId,$phone);
+
+    /**
      * 微信登录
      * @param $wxInfo
      * @param $type

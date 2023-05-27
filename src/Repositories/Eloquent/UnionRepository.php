@@ -46,13 +46,13 @@ class UnionRepository extends Repository implements UnionInterface
                 $wxInfo['user_id'] = $userInfo['id'];
             }
 
-
         }
+
+        unset($wxInfo['invite_no']);
 
         if ( !empty($wxInfo['privilege']) ) {
             $wxInfo['privilege'] = json_encode($wxInfo['privilege']);
         }
-
 
         $res = $this->add($wxInfo);
         if ($res) {
@@ -64,6 +64,29 @@ class UnionRepository extends Repository implements UnionInterface
         DB::rollback();
         return false;
 
+    }
+
+    /**
+     * 绑定手机号
+     * @param $userId
+     * @param $phone
+     * @return mixed|void
+     */
+    public function bindPhone($userId,$phone)
+    {
+        DB::beginTransaction();
+        $res = $this->update(['user_id'=>$userId],['phone'=>$phone]);
+        if ($res) {
+
+            $userRes = resolve(config('wx.bind_repository_class'))->update(['id'=>$userId],['phone'=>$phone]);
+            if ($userRes) {
+
+                DB::commit();
+                return true;
+            }
+        }
+        DB::rollback();
+        return false;
     }
 
     /**

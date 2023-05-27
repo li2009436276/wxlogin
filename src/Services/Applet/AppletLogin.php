@@ -49,11 +49,10 @@ class AppletLogin extends AccessToken
             $url = 'https://api.weixin.qq.com/wxa/business/getuserphonenumber';
             $accessToken = $this->accessToken();
             $data = [
-                'access_token' => $accessToken['access_token'],
                 'code' => $code
             ];
 
-            $res =  CurlService::get($url,$data);
+            $res =  CurlService::post($url.'?access_token='.$accessToken['access_token'],$data);
             if ($res['errcode'] != 0) {
                 throw new \Exception(json_encode($res));
             }

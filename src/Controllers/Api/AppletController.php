@@ -56,6 +56,31 @@ class AppletController
     }
 
     /**
+     * 绑定手机号
+     * @param Request $request
+     * @return BaseResource|ErrorResource
+     */
+    public function bindPhone(Request $request){
+
+        if ($request->phoneCode) {
+
+            $phoneInfo = $this->appletLogin->phone($request->phoneCode);
+            if ($phoneInfo) {
+                $phone = $phoneInfo['phone_info']['phoneNumber'];
+
+                $res = $this->unionInterface->bindPhone($request->ticket['id'],$phone);
+                if ($res) {
+
+                    return new BaseResource([]);
+                }
+            }
+        }
+
+        return new ErrorResource([]);
+
+    }
+
+    /**
      * 小程序授权 并绑定用户
      * @param Request $request
      * @return void|BaseResource|ErrorResource
@@ -74,6 +99,7 @@ class AppletController
                 'province'  => $request->province,
                 'city'      => $request->city,
                 'language'  => $request->language,
+                'invite_no' => $request->invite_no,
                 'type'      => 2,
             ];
 
@@ -83,19 +109,13 @@ class AppletController
             }
 
             //保存base64图片
-            $filePath = date('Y/m/d').'/'.StrService::randStr(16).'.png';
-            $saveRes = Storage::put($filePath,base64_decode($request->avatarUrl));
-            if ($saveRes) {
+            if ($request->headerimg) {
 
-                $data['headimgurl'] = $filePath;
-            }
+                $filePath = date('Y/m/d').'/'.StrService::randStr(16).'.png';
+                $saveRes = Storage::put($filePath,base64_decode(explode(',',$request->headerimg)[1]));
+                if ($saveRes) {
 
-            //获取手机号
-            if ($request->phoneCode) {
-
-                $phoneInfo = $this->appletLogin->phone($request->phoneCode);
-                if ($phoneInfo) {
-                    $data['phone'] = $phoneInfo['phone_info']['phoneNumber'];
+                    $data['headimgurl'] = $filePath;
                 }
             }
 
