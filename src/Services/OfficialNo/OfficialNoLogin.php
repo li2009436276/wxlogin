@@ -41,7 +41,7 @@ class OfficialNoLogin
     public function getUserInfo($openid, $access_token)
     {
         $url = sprintf( $this->userUrl, $access_token, $openid );
-        $re = CurlService::get( $url );
+        $re = CurlService::get($url);
         return $re;
     }
 }

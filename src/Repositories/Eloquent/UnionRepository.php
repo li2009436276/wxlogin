@@ -50,7 +50,7 @@ class UnionRepository extends Repository implements UnionInterface
 
         unset($wxInfo['invite_no']);
 
-        if ( !empty($wxInfo['privilege']) ) {
+        if (isset($wxInfo['privilege']) && is_array($wxInfo['privilege']) ) {
             $wxInfo['privilege'] = json_encode($wxInfo['privilege']);
         }
 
