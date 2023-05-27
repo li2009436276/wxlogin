@@ -60,7 +60,7 @@ class OfficialController
                     $wxInfo = $this->officialNoLogin->getUserInfo($res['openid'], $res['access_token']);
 
                     if ($wxInfo && !empty($wxInfo['openid'])) {
-
+                        $wxInfo['invite_no'] = $request->invite_no;
                         $res = $this->unionInterface->create($wxInfo);
                         if ($res) {
 
@@ -69,7 +69,7 @@ class OfficialController
                     }
                 } else {
 
-                    $res = $this->unionInterface->create(['openid'=>$res['openid']]);
+                    $res = $this->unionInterface->create(['openid'=>$res['openid'],'invite_no'=>$request->invite_no]);
                     if ($res) {
 
                         $userInfo = $this->unionInterface->login($res);
