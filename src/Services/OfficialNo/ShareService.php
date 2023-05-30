@@ -54,7 +54,7 @@ class ShareService
         return $access_token;
     }
 
-    public static function share(){
+    public static function share($url){
 
         //开始签名算法了
         $dataa['noncestr'] = 'sjijfdddsif'; //随意字符串 一会要传到JS里去.要求一致
@@ -63,7 +63,7 @@ class ShareService
 
         $dataa['timestamp'] = time();
 
-        $dataa['url'] = 'http://'.$_SERVER['HTTP_HOST'].'/';//动态获取URL
+        $dataa['url'] = $url;
 
         ksort($dataa);
 

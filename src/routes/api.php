@@ -14,3 +14,6 @@ Route::middleware('user.auth')->group(function (){
 
 //微信公众号
 Route::post('/official/auth','OfficialController@auth');
+
+//公众号分享
+Route::post('/share/share','ShareController@share');
