@@ -37,9 +37,6 @@ class ShareService
 
     public static function getApiAccessToken()
     {
-
-        $token_file = 'D:/phpstudy_pro/WWW/access_token.json';
-        //$token_file = 'D:/access_token.json';
         $data = Cache::get('share_access_token');
         if (!$data) {
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".\config('wx.official_app_id')."&secret=".\config('wx.official_secret');
