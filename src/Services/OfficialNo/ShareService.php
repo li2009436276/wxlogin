@@ -2,6 +2,7 @@
 
 namespace WxLogin\Services\OfficialNo;
 
+use Curl\StrService\StrService;
 use Illuminate\Support\Facades\Cache;
 
 class ShareService
@@ -57,7 +58,7 @@ class ShareService
     public static function share($url){
 
         //开始签名算法了
-        $dataa['noncestr'] = 'sjijfdddsif'; //随意字符串 一会要传到JS里去.要求一致
+        $dataa['noncestr'] = StrService::randStr(10); //随意字符串 一会要传到JS里去.要求一致
 
         $dataa['jsapi_ticket'] = self::getJsApiTicket();
 
