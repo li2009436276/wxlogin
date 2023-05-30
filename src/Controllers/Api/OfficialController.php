@@ -3,7 +3,9 @@
 namespace WxLogin\Controllers\Api;
 
 
+use Curl\StrService\StrService;
 use Curl\TicketService\TicketService;
+use Illuminate\Support\Facades\Storage;
 use WxLogin\Resources\BaseResource;
 use WxLogin\Resources\ErrorResource;
 use Illuminate\Http\Request;
@@ -61,12 +63,28 @@ class OfficialController
 
                     if ($wxInfo && !empty($wxInfo['openid'])) {
                         $wxInfo['invite_no'] = $request->invite_no;
+
+                        //保存base64图片
+                        if ($wxInfo['headimgurl']) {
+
+                            $filePath = date('Y/m/d').'/'.StrService::randStr(16).'.png';
+                            $saveRes = Storage::put($filePath,file_get_contents($wxInfo['headimgurl']));
+                            if ($saveRes) {
+
+                                $wxInfo['headimgurl'] = $filePath;
+                            }
+                        }
+
+
                         $res = $this->unionInterface->create($wxInfo);
                         if ($res) {
 
                             $userInfo = $this->unionInterface->login($res);
                         }
                     }
+
+
+
                 } else {
 
                     $res = $this->unionInterface->create(['openid'=>$res['openid'],'invite_no'=>$request->invite_no]);
