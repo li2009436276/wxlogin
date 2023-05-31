@@ -18,9 +18,9 @@ class ShareService
                 $res = CurlService::get($url);
 
                 if ($res) {
-                    if (!empty($res['jsapi_ticket'])) {
+                    if (!empty($res['ticket'])) {
 
-                        $data = $res['jsapi_ticket'];
+                        $data = $res['ticket'];
                         Cache::put('jsapi_ticket', $data, 7000);
                     } else {
 
