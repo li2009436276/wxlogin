@@ -10,18 +10,30 @@ class ShareService
 {
     public static function getJsApiTicket()
     {
-        $data =  Cache::get('jsapi_ticket');
-        if (!$data) {
-            $accessToken = self::getApiAccessToken();
-            $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
-            $res =CurlService::get($url);
-            if ($res) {
-                $data = $res['jsapi_ticket'];
-                Cache::put('jsapi_ticket', $data,7000);
-            }
-        }
+        try {
+            $data = Cache::get('jsapi_ticket');
+            if (!$data) {
+                $accessToken = self::getApiAccessToken();
+                $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
+                $res = CurlService::get($url);
 
-        return $data;
+                if ($res) {
+                    if (!empty($res['jsapi_ticket'])) {
+
+                        $data = $res['jsapi_ticket'];
+                        Cache::put('jsapi_ticket', $data, 7000);
+                    } else {
+
+                        throw new \Exception(json_encode($res));
+                    }
+                }
+            }
+
+            return $data;
+        } catch (\Exception $exception) {
+
+            throw new \Exception($exception->getMessage());
+        }
     }
 
 
@@ -35,17 +47,31 @@ class ShareService
 
     public static function getApiAccessToken()
     {
-        $data = Cache::get('share_access_token');
-        if (!$data) {
-            $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".\config('wx.official_app_id')."&secret=".\config('wx.official_secret');
-            $res = CurlService::get($url);
-            if ($res) {
+        try {
 
-                $data = $res['access_token'];
-                Cache::put('share_access_token',$res['access_token'],7000);
+            $data = Cache::get('share_access_token');
+            if (!$data) {
+                $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".\config('wx.official_app_id')."&secret=".\config('wx.official_secret');
+                $res = CurlService::get($url);
+                if ($res) {
+
+                    if (!empty($res['access_token'])) {
+
+                        $data = $res['access_token'];
+                        Cache::put('share_access_token',$res['access_token'],7000);
+                    } else {
+
+                        throw new \Exception(json_encode($res));
+                    }
+                }
+
             }
+            return $data;
+        } catch (\Exception $exception) {
+
+            throw new \Exception($exception->getMessage());
         }
-        return $data;
+
     }
 
     public static function share($url){
