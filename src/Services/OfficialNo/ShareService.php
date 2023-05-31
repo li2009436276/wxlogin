@@ -2,6 +2,7 @@
 
 namespace WxLogin\Services\OfficialNo;
 
+use Curl\CurlService\CurlService;
 use Curl\StrService\StrService;
 use Illuminate\Support\Facades\Cache;
 
@@ -13,17 +14,14 @@ class ShareService
         if (!$data) {
             $accessToken = self::getApiAccessToken();
             $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
-            $res = json_decode(self::httpRequest($url));
-            $ticket = $res->ticket;
-            if ($ticket) {
-
-                Cache::put('jsapi_ticket', $ticket,7000);
+            $res =CurlService::get($url);
+            if ($res) {
+                $data = $res['jsapi_ticket'];
+                Cache::put('jsapi_ticket', $data,7000);
             }
-        } else {
-            $ticket = $data;
         }
 
-        return $ticket;
+        return $data;
     }
 
 
@@ -40,16 +38,14 @@ class ShareService
         $data = Cache::get('share_access_token');
         if (!$data) {
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".\config('wx.official_app_id')."&secret=".\config('wx.official_secret');
-            $res = json_decode(self::httpRequest($url));
-            $access_token = $res->access_token;
-            if ($access_token) {
+            $res = CurlService::get($url);
+            if ($res) {
 
-                Cache::put('share_access_token',$access_token,7000);
+                $data = $res['access_token'];
+                Cache::put('share_access_token',$res['access_token'],7000);
             }
-        } else {
-            $access_token = $data;
         }
-        return $access_token;
+        return $data;
     }
 
     public static function share($url){
@@ -77,23 +73,5 @@ class ShareService
         $dataa['appId'] = \config('wx.official_app_id');
         $dataa['nonceStr'] = $dataa['noncestr'];
         return $dataa;
-    }
-
-    //HTTP请求（支持HTTP/HTTPS，支持GET/POST）
-    public static function httpRequest($url, $data = null)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-        if (!empty($data)) {
-            curl_setopt($curl, CURLOPT_POST, TRUE);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        }
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-        $output = curl_exec($curl);
-        curl_close($curl);
-        //file_put_contents('D:/weixin.' . date("Ymd") . '.log', date("Y-m-d H:i:s") . "\t" . $output . "\n", FILE_APPEND); //记录微信请求的相关日志，以用于排插错误
-        return $output;
     }
 }
