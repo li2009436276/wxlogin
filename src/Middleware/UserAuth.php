@@ -16,7 +16,11 @@ class UserAuth
         $ticket = $request->ticket ? :$request->header('ticket');
         if ($ticket) {
             $userInfo = Cache::get($ticket);
-            $userInfo['is_api'] = 1;
+            if ($userInfo) {
+
+                $userInfo['is_api'] = 1;
+            }
+
         } else{
 
             $userInfo = Session::get('ticket');
